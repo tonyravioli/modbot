@@ -61,6 +61,12 @@ class Donger(BaseClient):
                 self.message(source, "This will go to the user in a private message when someone says !sendtothisuser") # because "source" is the user the command came from
             elif command == "sendtomainchannel":
                 self.message(self.mainchannel, "This will go to the main channel")
+            elif command == "givevoice":
+                self.message(self.opchannel, "setting +v on {}".format(args[0]))
+                self.giveVoice(args[0])
+            elif command == "takevoice":
+                self.message(self.opchannel, "setting -v on {}".format(args[0]))
+                self.takeVoice(args[0])
             elif command == "help":
                 self.message(target, "Still working on that.")
                 for ch in self.cmdhelp.keys(): #Extended commands help
@@ -92,6 +98,12 @@ class Donger(BaseClient):
         # Resolve user account
         user = self.users[user]['account']
         self.message("ChanServ", "AKICK {0} ADD {1} !T {2} {3}".format(self.channel, user, time, message))
+
+    def giveVoice(self, user):
+        self.set_mode(self.mainchannel, "+v", user)
+
+    def takeVoice(self, user):
+        self.set_mode(self.mainchannel, "-v", user)
     
     def _rename_user(self, user, new):
         if user in self.users:
