@@ -45,15 +45,20 @@ class Donger(BaseClient):
 
     @pydle.coroutine
     def on_message(self, target, source, message):
-        if message.startswith("!") or message.startswith(config['nick']):
+        if target == self.mainchannel: #Here's where we'll do things with main channel stuff.
+            self.lastheardfrom[source] = time.time()
+            self.sourcehistory.append(source) # todo: make this a dict to keep track of the last 10 lines from any given user
+
+        if (target == self.opchannel) and (message.startswith("!") or message.startswith(config['nick'])):
+            #And here's where we'll do things in the op channel
             command = message[1:].split(" ")[0].lower()
             args = message.rstrip().split(" ")[1:]
             
-            if target == self.channel: # Command in main channel
+            if target == self.mainchannel: # Command in main channel
                 self.lastheardfrom[source] = time.time()
                 self.sourcehistory.append(source)
 
-            # Regular commands
+            # 
             if command == "thischannel":
                 self.message(target, "This will output to the channel the command came from when someone says !thischannel") # because "target" is the channel that it came from
             elif command == "thisuser":
@@ -86,7 +91,7 @@ class Donger(BaseClient):
             self.cowardQuit(user)
     
 
-    def akick(self, user, time=20, message="FUCKING REKT"):
+    def akick(self, user, time=20, message="Banned for 20 minutes"):
         # Resolve user account
         user = self.users[user]['account']
         self.message("ChanServ", "AKICK {0} ADD {1} !T {2} {3}".format(self.channel, user, time, message))
