@@ -54,15 +54,13 @@ class Donger(BaseClient):
             command = message[1:].split(" ")[0].lower()
             args = message.rstrip().split(" ")[1:]
             
-            if target == self.mainchannel: # Command in main channel
-                self.lastheardfrom[source] = time.time()
-                self.sourcehistory.append(source)
 
-            # 
-            if command == "thischannel":
-                self.message(target, "This will output to the channel the command came from when someone says !thischannel") # because "target" is the channel that it came from
-            elif command == "thisuser":
-                self.message(source, "This will go to the user in a private message when someone says !thisuser") # because "source" is the user the command came from
+            if command == "sendtothischannel":
+                self.message(target, "This will output to the channel the command came from when someone says !sendtothischannel") # because "target" is the channel that it came from
+            elif command == "sendtothisuser":
+                self.message(source, "This will go to the user in a private message when someone says !sendtothisuser") # because "source" is the user the command came from
+            elif command == "sendtomainchannel":
+                self.message(self.mainchannel, "This will go to the main channel")
             elif command == "help":
                 self.message(target, "Still working on that.")
                 for ch in self.cmdhelp.keys(): #Extended commands help
