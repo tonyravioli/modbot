@@ -81,13 +81,12 @@ class Donger(BaseClient):
 
     
     def on_quit(self, user, message=None):
-        if self.gameRunning:
-            self.cowardQuit(user)
+        #do nothing
+        return
     
     def on_part(self, channel, user, message=None):
-        if self.gameRunning and channel == self.channel:
-            self.cowardQuit(user)
-    
+        #also do nothing
+        return
 
     def akick(self, user, time=20, message="Banned for 20 minutes"):
         # Resolve user account
@@ -120,34 +119,8 @@ class Donger(BaseClient):
         while True:
             time.sleep(5)
             
-            if not self.gameRunning or (self.turnStart == 0):
-                for i in copy.copy(self.pendingFights):
-                    if (time.time() - self.pendingFights[i]['ts'] > 300):
-                        self.message(self.channel, "\002{0}\002's challenge has expired.".format(self.pendingFights[i]['players'][0]))
-                        del self.pendingFights[i]
-                continue
-            
-            if (time.time() - self.turnStart > 50) and len(self.turnlist) >= (self.currentTurn + 1):
-                self.message(self.channel, "\002{0}\002 forfeits due to idle.".format(self.turnlist[self.currentTurn]))
-                self.players[self.turnlist[self.currentTurn].lower()]['hp'] = -1
-                self.countStat(self.turnlist[self.currentTurn], "idleouts")
-                self.kick(self.channel, self.turnlist[self.currentTurn], "WAKE UP SHEEPLE")
-                
-                aliveplayers = 0
-                # TODO: Do this in a neater way
-                for p in self.players:
-                    if self.players[p]['hp'] > 0:
-                        aliveplayers += 1
-                        survivor = p
-                
-                if aliveplayers == 1:
-                    self.win(survivor, False)
-                else:
-                    self.getTurn()
-            elif (time.time() - self.turnStart > 30) and len(self.turnlist) >= (self.currentTurn + 1) and not self.poke:
-                self.poke = True
-                self.message(self.channel, "Wake up, \002{0}\002!".format(self.turnlist[self.currentTurn]))
-    
+            #This is where fight and challenge timeouts went...not sure what to do with it now
+
     def _send(self, input):
         super()._send(input)
         if not isinstance(input, str):
