@@ -57,29 +57,18 @@ class Donger(BaseClient):
                 self.sourcehistory.append(source)
 
             # Regular commands
-            if command == "raise":
-                self.message(target, "ヽ༼ຈل͜ຈ༽ﾉ RAISE YOUR DONGERS ヽ༼ຈل͜ຈ༽ﾉ")
-            elif command == "lower":
-                self.message(target, "┌༼ຈل͜ຈ༽┐ ʟᴏᴡᴇʀ ʏᴏᴜʀ ᴅᴏɴɢᴇʀs ┌༼ຈل͜ຈ༽┐")
+            if command == "thischannel":
+                self.message(target, "This will output to the channel the command came from when someone says !thischannel") # because "target" is the channel that it came from
+            elif command == "thisuser":
+                self.message(source, "This will go to the user in a private message when someone says !thisuser") # because "source" is the user the command came from
             elif command == "help":
-                self.message(target, "PM'd you my commands.")
-                self.message(source, "  More commands available at http://bit.ly/1pG2Hay")
-                self.message(source, "Commands available only in {0}:".format(self.channel))
-                self.message(source, "  !fight <nickname> [othernicknames]: Challenge another player, or multiple players.")
-                self.message(source, "  !duel <nickname>: Same as fight, but only 1v1.")
-                self.message(source, "  !deathmatch <nickname>: Same as duel, but the loser is bant for 20 minutes.")
-                self.message(source, "  !ascii <text>: Turns any text 15 characters or less into ascii art")
-                self.message(source, "  !cancel: Cancels a !fight")
-                self.message(source, "  !reject <nick>: Rejects a !fight")
-                self.message(source, "  !stats [player]: Outputs player's game stats (or your own stats)")
-                self.message(source, "  !top, !shame: Lists the best, or the worst, players")
-                self.message(source, "Commands available everywhere:")
+                self.message(target, "Still working on that.")
                 for ch in self.cmdhelp.keys(): #Extended commands help
                     self.message(source, "  !{}: {}".format(ch, self.cmdhelp[ch]))
             elif command == "version":
                 try:
                     ver = subprocess.check_output(["git", "describe", "--tags"]).decode().strip()
-                    self.message(target, "I am running {} ({})".format(ver,'http://bit.ly/1pG2Hay'))
+                    self.message(target, "I am running {} ({})".format(ver,'working on this'))
                 except:
                     self.message(target, "I have no idea.")
             elif command == "part" and self.users[source]['account'] in config['admins']:
