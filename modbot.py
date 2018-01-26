@@ -25,8 +25,8 @@ class Donger(BaseClient):
     def __init__(self, nick, *args, **kwargs):
         super().__init__(nick, *args, **kwargs)
         
-        self.channel = config['channel'] # Main fight channel
-        self.currentchannels = [] # List of current channels the bot is in
+        self.mainchannel = config['mainchannel'] # Main channel
+        self.opchannel = config['opchannel']
         self.lastheardfrom = {} # lastheardfrom['Polsaker'] = time.time()
         self.sourcehistory = [] # sourcehistory.append(source)
         
@@ -40,15 +40,12 @@ class Donger(BaseClient):
 
     def on_connect(self):
         super().on_connect()
-        self.join(self.channel)
-        self.currentchannels.append(self.channel)
-        for chan in config['auxchans']:
-            self.join(chan)
-            self.currentchannels.append(chan)
+        self.join(self.mainchannel)
+        self.join(self.opchannel)
 
     @pydle.coroutine
     def on_message(self, target, source, message):
-        if message.startswith("!"):
+        if message.startswith("!") or message.startswith(config['nick']):
             command = message[1:].split(" ")[0].lower()
             args = message.rstrip().split(" ")[1:]
             
@@ -71,30 +68,6 @@ class Donger(BaseClient):
                     self.message(target, "I am running {} ({})".format(ver,'working on this'))
                 except:
                     self.message(target, "I have no idea.")
-            elif command == "part" and self.users[source]['account'] in config['admins']:
-                if not args:
-                    return self.message(target, "You need to list the channel you want me to leave.")
-                if args[0] not in self.currentchannels:
-                    return self.message(target, "I'm pretty sure I'm not currently in {0}.".format(args[0]))
-                if args[0] == self.channel:
-                    return self.message(target, "I can't part my primary channel.")
-                self.message(target, "Attempting to part {}...".format(args[0]))
-                try:
-                    self.part(args[0],"NOT ALL THOSE WHO DONGER ARE LOST")
-                    self.currentchannels.remove(args[0])
-                except:
-                    pass
-            elif command == "join" and self.users[source]['account'] in config['admins']:
-                if not args:
-                    return self.message(target, "You need to list the channel you want me to join.")
-                if args[0] in self.currentchannels:
-                    return self.message(target, "I'm pretty sure I'm already in {0}.".format(args[0]))
-                self.message(target, "Attempting to join {}...".format(args[0]))
-                try:
-                    self.join(args[0])
-                    self.currentchannels.append(args[0])
-                except:
-                    pass
             elif command in self.extcmds: #Extended commands support
                 try:
                     if self.cmds[command].adminonly and self.users[source]['account'] not in config['admins']:
