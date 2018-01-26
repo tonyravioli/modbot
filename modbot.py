@@ -67,6 +67,16 @@ class Donger(BaseClient):
             elif command == "takevoice":
                 self.message(self.opchannel, "setting -v on {}".format(args[0]))
                 self.takeVoice(args[0])
+
+            elif command == "whohasvoice": #This is just to get familiar with checking these modes...
+                try:
+                    listofvoicedusers = self.channels[self.mainchannel]['modes']['v']
+                    self.message(self.opchannel, "{}".format(','.join(listofvoicedusers)))
+                except:
+                    self.message(self.opchannel, "uhh something happened")
+                    raise
+
+
             elif command == "help":
                 self.message(target, "Still working on that.")
                 for ch in self.cmdhelp.keys(): #Extended commands help
