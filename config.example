@@ -1,0 +1,15 @@
+{
+    "server": "irc.server.net",
+    "nick": "botnick",
+    "mainchannel": "#fightchannel",
+    "opchannel": "#opchannel"
+    "port": 6697,
+    "tls": true,
+    "nickserv_username": "dongeruser",
+    "nickserv_password": "yourpasswd",
+    "auxchans": [],
+    "extendedcommands": ["jaden","excuse","dong"],
+    "topmodifier": 0.05,
+    "admins": ["user1", "user2"],
+    "show-ascii-art-text": true
+}
