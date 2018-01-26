@@ -6,10 +6,8 @@ import logging
 import threading
 import random
 import time
-from pyfiglet import Figlet
 import copy
 import operator
-import peewee
 import importlib
 import subprocess
 import datetime
@@ -26,7 +24,6 @@ BaseClient = pydle.featurize(pydle.features.RFC1459Support, pydle.features.WHOXS
 class Donger(BaseClient):
     def __init__(self, nick, *args, **kwargs):
         super().__init__(nick, *args, **kwargs)
-        
         
         self.channel = config['channel'] # Main fight channel
         self.currentchannels = [] # List of current channels the bot is in
