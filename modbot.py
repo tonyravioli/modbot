@@ -44,7 +44,7 @@ class Donger(BaseClient):
         self.join(self.opchannel)
 
     @pydle.coroutine
-    def on_message(self, target, source, message):
+    def on_message(self, target, source, message): #"target" is the channel the command was seen in. "source" is the user. for some reason.
         if target == self.mainchannel: #Here's where we'll do things with main channel stuff.
             self.lastheardfrom[source] = time.time()
             self.sourcehistory.append(source) # todo: make this a dict to keep track of the last 10 lines from any given user
